@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginRight="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginBottom="10dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            app:cardCornerRadius="10dp"
+            android:layout_marginBottom="15dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/imgImage"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textAlignment="textEnd"
+            android:text="SDCSD"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textAlignment="textEnd"
+            android:text="cdscsd"
+            android:textColor="@color/lightGray"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="17sp"/>
+
+        <TextView
+            android:id="@+id/tvTitile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:text="SDCSD"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="25sp"/>
+
+        <TextView
+            android:id="@+id/tvCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="SDCSD"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/tvContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="SDCSD"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textColor="@color/lightGray"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/tvLike"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="SDCSD"
+            android:textAlignment="textEnd"
+            android:textColor="@color/lightGray"
+            android:fontFamily="@font/poppins_semibold"
+            android:layout_marginBottom="15dp"
+            android:textSize="15sp"/>
+
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>
