@@ -16,6 +16,7 @@ import com.example.esemkablogger_v2.model.Category
 import com.example.esemkablogger_v2.model.Posts
 import com.example.esemkablogger_v2.model.User
 import com.example.esemkablogger_v2.ui.fragment.PostsFragment
+import com.example.esemkablogger_v2.util.mySharedPrefrence
 import com.example.esemkablogger_v2.util.support
 import org.json.JSONArray
 import org.json.JSONObject
@@ -30,7 +31,8 @@ class DetailPostActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         postsId = intent.getStringExtra("id").toString()
-        userId = intent.getStringExtra("userid").toString()
+        userId = intent.getStringExtra("userId").toString()
+//        support.l
 
         if (userId == support.userId) {
             binding.btnDelete.visibility = View.VISIBLE
@@ -44,15 +46,47 @@ class DetailPostActivity : AppCompatActivity() {
             like(this).execute()
         }
 
+        binding.btnDelete.setOnClickListener {
+            deleteData(this).execute()
+        }
+
         isLiked(this).execute()
 
         showData(this).execute()
 
     }
 
+    class deleteData(private var activity: DetailPostActivity): AsyncTask<String, Void, String>() {
+        override fun doInBackground(vararg p0: String?): String {
+            return HttpHandler().reqeust(endpoint = "posts/${activity.postsId}", method = "DELETE", token = mySharedPrefrence.getToken(activity))
+        }
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            if (result!!.isNotEmpty()) {
+                try {
+                    var code = JSONObject(result).getInt("code")
+
+                    if (code == 204) {
+                        activity.finish()
+                    }
+                } catch (e: Exception) {
+                    support.log(e.message.toString())
+                }
+
+            }
+        }
+    }
+
+    fun json(): String {
+        var j = JSONObject()
+        j.put("postId", postsId)
+        return j.toString()
+    }
+
     class like(private var activity: DetailPostActivity): AsyncTask<String, Void, String>() {
         override fun doInBackground(vararg p0: String?): String {
-            return HttpHandler().reqeust(endpoint = "posts/like", method = "POST", requestBody = activity.postsId)
+            return HttpHandler().reqeust(endpoint = "posts/like", method = "POST", requestBody = activity.json(), token = mySharedPrefrence.getToken(activity))
         }
 
         override fun onPostExecute(result: String?) {

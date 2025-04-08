@@ -1,60 +1,90 @@
 package com.example.esemkablogger_v2.ui.fragment
 
+import android.content.Intent
+import android.os.AsyncTask
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.esemkablogger_v2.R
+import com.example.esemkablogger_v2.adapter.ViewPagerAdapter2
+import com.example.esemkablogger_v2.databinding.FragmentProfileBinding
+import com.example.esemkablogger_v2.domain.HttpHandler
+import com.example.esemkablogger_v2.ui.activity.AddPostActivity
+import com.example.esemkablogger_v2.ui.activity.EditProfileActivity
+import com.example.esemkablogger_v2.util.mySharedPrefrence
+import com.example.esemkablogger_v2.util.support
+import org.json.JSONObject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    lateinit var binding: FragmentProfileBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
+
+        binding.viewPager.adapter = ViewPagerAdapter2(childFragmentManager)
+        binding.tablayout.setupWithViewPager(binding.viewPager)
+
+        dataMe(this).execute()
+
+        binding.btnUpdate.setOnClickListener {
+            startActivity(Intent(context, EditProfileActivity::class.java))
+        }
+
+        binding.btnAdd.setOnClickListener {
+            startActivity(Intent(context, AddPostActivity::class.java))
+        }
+
+
+        return binding.root
+
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onResume() {
+        super.onResume()
+        dataMe(this).execute()
+    }
+
+    class dataMe(private var fragment: ProfileFragment): AsyncTask<String, Void, String>() {
+        override fun doInBackground(vararg p0: String?): String {
+            return HttpHandler().reqeust(endpoint = "me", token = support.token)
+        }
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            if (result!!.isNotEmpty()) {
+                try {
+                    var body = JSONObject(result).getString("body")
+                    var code = JSONObject(result).getInt("code")
+
+                    if (code == 200) {
+                        var user = JSONObject(body)
+                        var firstName = user.getString("firstName")
+                        var lastName = user.getString("lastName")
+                        var dateOfBirth = user.getString("dateOfBirth")
+                        var joinDate = user.getString("joinDate")
+                        var photo = user.getString("photo")
+
+
+                        fragment.binding.tvName.text = "$firstName $lastName"
+                        fragment.binding.tvDate.text = dateOfBirth.split("T")[0]
+                        fragment.binding.tvJoin.text =  "Join at  ${joinDate.split("T")[0]}"
+
+                        if (photo != null) {
+                            support.showImage(fragment.binding.imgPhoto).execute(support.urlImage + photo)
+                        }
+
+                    }
+
+                } catch (e: Exception) {
+//                    support.log(e.message.toString())
                 }
             }
+        }
     }
 }

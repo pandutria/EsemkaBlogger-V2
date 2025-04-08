@@ -31,19 +31,23 @@ class PostsFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentPostsBinding.inflate(layoutInflater, container, false)
 
-        binding.etSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//        binding.etSearch.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//
+//            }
+//
+//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//                showData(this@PostsFragment).execute()
+//            }
+//
+//            override fun afterTextChanged(p0: Editable?) {
+//
+//            }
+//        })
 
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                showData(this@PostsFragment).execute()
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-
-            }
-        })
+        binding.btb.setOnClickListener {
+            showData(this).execute()
+        }
 
         dataMe(this).execute()
 
@@ -64,6 +68,7 @@ class PostsFragment : Fragment() {
 
                 if (code == 200) {
                     support.userId = JSONObject(body).getString("id")
+                    support.log(JSONObject(body).getString("id"))
                 }
             }
         }

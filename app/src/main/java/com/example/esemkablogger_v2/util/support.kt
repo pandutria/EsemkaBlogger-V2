@@ -15,6 +15,7 @@ object support {
 
     var token = ""
     var userId = ""
+    var password = ""
 
     fun log (text: String) {
         Log.d("DataApi", "Eror : $text")

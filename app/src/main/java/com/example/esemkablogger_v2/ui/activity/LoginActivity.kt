@@ -70,7 +70,8 @@ class LoginActivity : AppCompatActivity() {
 
                 if (code == 200) {
                     mySharedPrefrence.saveToken(activity, response.getString("token"))
-                    mySharedPrefrence.getToken(activity)
+                    support.token = response.getString("token")
+                    support.password = activity.binding.etPassword.text.toString()
                     activity.startActivity(Intent(activity, MainActivity::class.java))
                 }
 
